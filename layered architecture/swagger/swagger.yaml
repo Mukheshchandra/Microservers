@@ -1,0 +1,275 @@
+swagger: '2.0'
+info:
+  description: Project Book Publication.
+  version: '1.0'
+  title: library
+  contact:
+    email: mukhesh.mekala@zopsmart.com
+host: localhost:8000
+tags:
+
+  - name: Author
+    description: collections of details of author
+  - name: Books
+    description: collection of details of books
+schemes:
+  - http
+paths:
+  /books:
+    get:
+      tags:
+        - Books
+      summary: Get all books details
+      description: Returns all book in the database
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: title
+          in: query
+          description: Return all books with the provided details
+          required: false
+          type: string
+          format: string
+        - name: includeAuthor
+          in: query
+          description: Return book details with author included
+          required: false
+          type: boolean
+          format: string
+      responses:
+        '200':
+          description: fetched  successfully
+          schema:
+            $ref: '#/definitions/Book'
+        '500':
+          description: Internal Server Error
+
+    post:
+      tags:
+        - Books
+      summary: post  a new Book
+      description: insert  a new Book to the database
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Creates a Book
+          required: true
+          schema:
+            $ref: '#/definitions/Book'
+      responses:
+        '201':
+          description: created successfully
+          schema:
+            $ref: '#/definitions/Book'
+        '400':
+          description: Bad Request
+        '409':
+          description: Status Conflict
+        '500':
+          description: Internal Server Error
+
+
+
+  /books/{id}:
+    get:
+      tags:
+        - Books
+      summary: fetch details of book with provided id
+      description: fetch and print the details of the book with the provided id
+      operationId: Get
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id of book to fetch details
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: Data fetched
+          schema:
+            $ref: '#/definitions/Book'
+        '400':
+          description: Bad Request
+        '404':
+          description: No entry found
+        '500':
+          description: Internal Server Error
+
+    put:
+      tags:
+        - Books
+      summary: Update book of the given id
+      description: Update the book details entered by user of the book with the given id
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id of book to which is to be updated
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description:  updated successfully
+          schema:
+            $ref: '#/definitions/Book'
+        '404':
+          description: No entry updated
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+
+    delete:
+      tags:
+        - Books
+      summary: Deletes book with the provided id
+      description: checks and if book exist with the id deletes it
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id of book which is to be delete
+          required: true
+          type: string
+          format: string
+      responses:
+        '204':
+          description: successfully deleted no content
+        '400':
+          description: Bad Request
+        '404':
+          description: No book deleted
+        '500':
+          description: Internal Server Error
+
+  /author:
+    post:
+      tags:
+        - Author
+      summary: post a new Author
+      description: insert a new Author to the database
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Creates an Author
+          required: true
+          schema:
+            $ref: '#/definitions/Author'
+      responses:
+        '201':
+          description: Author created successfully
+          schema:
+            $ref: '#/definitions/Author'
+        '400':
+          description: Bad Request
+        '409':
+          description: Status Conflict
+        '500':
+          description: Internal Server Error
+  /author/{id}:
+    put:
+      tags:
+        - Author
+      summary: Update Author with the provided id
+      description: checks and if author exist with the id updates it
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id of Author which is to be update
+          required: true
+          type: string
+          format: string
+      responses:
+        '200':
+          description: Successfully updated
+          schema:
+            $ref: '#/definitions/Book'
+        '404':
+          description: page not found
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Author
+      summary: Deletes the Author with the provided id
+      description: checks and if author exists deletes it
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id  of Author which is to be delete
+          required: true
+          type: string
+          format: string
+      responses:
+        '204':
+          description: successfully deleted no content
+        '404':
+          description: page not found
+        '500':
+          description: Internal Server Error
+
+
+definitions:
+  Book:
+    type: object
+    properties:
+      BookID:
+        type: integer
+        format: int
+      Title:
+        type: string
+        format: string
+      Author:
+        $ref: '#/definitions/Author'
+
+      Publication:
+        type: string
+        description: Publication
+      PublishedDate:
+        type: string
+        description: Date of Pulication
+        format: YYYY/MM/DD
+
+  Author:
+    type: object
+    properties:
+      AuthorID:
+        type: integer
+        format: int
+      Firstname:
+        type: string
+        format: string
+      Lastname:
+        type: string
+        format: string
+      Dob:
+        type: string
+        format: YYYY/MM/DD
+      Penname:
+        type: string
+        format: string
+externalDocs:
+  description: ''
+  url: https://github.com/mukhesh-zs
